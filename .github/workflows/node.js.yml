@@ -38,13 +38,6 @@ jobs:
       with:
          name: webpack artifacts
          path: public/
-         
-    - name: Label when approved
-      uses: LuizMacedo/hello-github-actions-demo@main
-      env:
-        APPROVALS: "1"
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ADD_LABEL: "approved"
 
   test:
     needs: build
