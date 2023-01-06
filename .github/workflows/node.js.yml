@@ -72,7 +72,9 @@ jobs:
     - name: npm install, and test
     - run: npm install
       working-directory: './myExpressApp/'
+      
     - run: npm test
       working-directory: './myExpressApp/'
+      
       env:
         CI: true
