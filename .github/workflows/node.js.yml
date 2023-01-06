@@ -27,6 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: './myExpressApp/package-lock.json'
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
@@ -51,6 +52,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './myExpressApp/package-lock.json'
     - name: npm install, and test
       run: |
         npm install
