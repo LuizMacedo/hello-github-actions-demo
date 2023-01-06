@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     
     strategy:
@@ -29,34 +28,51 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './myExpressApp/package-lock.json'
     - run: npm ci
+      working-directory: './myExpressApp/'
     - run: npm run build --if-present
+      working-directory: './myExpressApp/'
     - run: npm test
+      working-directory: './myExpressApp/'
+    
     - uses: actions/upload-artifact@main
       with:
          name: webpack artifacts
          path: public/
+         
+    - name: Label when approved
+      uses: pullreminders/label-when-approved-action@main
+      env:
+        APPROVALS: "1"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ADD_LABEL: "approved"
 
   test:
+    needs: build
     runs-on: ${{ matrix.os }}
+    
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node-version: [14.x, 16.x, 18.x]
+        
     steps:
     - uses: actions/checkout@v3
     - uses: actions/download-artifact@main
       with:
         name: webpack artifacts
         path: public
+        
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: './myExpressApp/package-lock.json'
+        
     - name: npm install, and test
-      run: |
-        npm install
-        npm test
+    - run: npm install
+      working-directory: './myExpressApp/'
+    - run: npm test
+      working-directory: './myExpressApp/'
       env:
         CI: true
