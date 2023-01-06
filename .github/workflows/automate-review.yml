@@ -1,14 +1,12 @@
-name: Automate Review
-
 on: pull_request_review
-
+name: Automate Review
 jobs:
   labelWhenApproved:
     name: Label when approved
     runs-on: ubuntu-latest
     steps:
     - name: Label when approved
-      uses: LuizMacedo/hello-github-actions-demo@main
+      uses: pullreminders/label-when-approved-action@main
       env:
         APPROVALS: "1"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
